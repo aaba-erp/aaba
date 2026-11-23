@@ -1,0 +1,1025 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>بصمة آباء</title>
+<link rel="manifest" href="attendance.webmanifest">
+<link rel="icon" type="image/png" href="fp-192.png">
+<link rel="apple-touch-icon" href="fp-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="نظام البصمة">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#1F3546">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+<link rel="preconnect" href="https://script.google.com">
+<link rel="preconnect" href="https://script.googleusercontent.com">
+<style>
+  :root{
+    --navy:#3B5F78; --navy2:#2C4A60; --navy3:#1F3546; --gold:#D08E2C; --gold2:#B87A1F;
+    --light:#EAF0F4; --goldlight:#FBF1E1;
+    --bg:#F5F3EE; --card:#FFFFFF; --text:#1E2A33; --muted:#66727C; --red:#B3261E; --line:#E2DDD3;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --bg:#0F161C; --card:#18222B; --text:#E9EEF2; --muted:#9DABB6; --light:#1F2D38; --goldlight:#2E2618; --line:#2A3743; }
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--text);font-family:Tajawal,system-ui,sans-serif;min-height:100vh}
+  header{background:linear-gradient(160deg,var(--navy) 0%,var(--navy3) 100%);color:#fff;padding:20px 16px 46px;text-align:center;border-bottom:4px solid var(--gold)}
+  .logo{width:84px;height:84px;border-radius:50%;background:#fff;display:inline-flex;align-items:center;justify-content:center;box-shadow:0 4px 14px rgba(0,0,0,.25);border:3px solid var(--gold);margin-bottom:10px}
+  .logo{overflow:hidden}
+  .logo img{height:58px;width:auto}
+  .clock span{display:inline-block}
+  header h1{margin:0;font-size:21px;font-weight:700}
+  header p{margin:6px 0 0;font-size:13px;color:#F3D9AE}
+  main{max-width:460px;margin:-30px auto 0;padding:0 16px 32px}
+  .card{background:var(--card);border-radius:18px;padding:20px;box-shadow:0 4px 16px rgba(30,42,51,.08);margin-bottom:14px;border:1px solid var(--line)}
+  h2{font-size:18px;margin:0 0 12px;color:var(--navy)}
+  @media (prefers-color-scheme: dark){ h2{color:#E8B867} }
+  label{display:block;font-size:14px;color:var(--muted);margin:12px 0 6px}
+  input{width:100%;font:inherit;font-size:20px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--text);text-align:center;letter-spacing:2px}
+  input:focus{outline:2px solid var(--gold);border-color:var(--gold)}
+  button{width:100%;font:inherit;font-size:17px;font-weight:700;padding:14px;border:0;border-radius:12px;cursor:pointer;margin-top:12px}
+  .primary{background:var(--navy);color:#fff}
+  .secondary{background:var(--light);color:var(--navy)}
+  @media (prefers-color-scheme: dark){ .secondary{color:#E8B867} }
+  .link{background:none;color:var(--muted);font-weight:500;font-size:14px;text-decoration:underline;padding:8px}
+  .row{display:flex;gap:10px}
+  .row button{flex:1}
+  .in{background:var(--navy);color:#fff} .out{background:var(--gold);color:#fff}
+  .punch{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
+  .punch button{margin:0;padding:20px 8px;font-size:18px;display:flex;flex-direction:column;align-items:center;gap:8px;border-radius:16px;box-shadow:0 4px 10px rgba(0,0,0,.12)}
+  .punch svg{width:34px;height:34px}
+  button:disabled{opacity:.5}
+  .msg{padding:12px 14px;border-radius:12px;font-size:15px;margin-top:12px;line-height:1.6}
+  .ok{background:#E3F2EA;color:#1B5E3A} .err{background:#FCE8E6;color:var(--red)} .info{background:var(--light);color:var(--text)}
+  @media (prefers-color-scheme: dark){ .ok{background:#183326;color:#A5D6B7} .err{background:#3A1F1D;color:#F2B8B5} }
+  .cam{position:relative;border-radius:16px;overflow:hidden;background:#000;aspect-ratio:3/4;margin-top:8px}
+  .cam video{width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+  .oval{position:absolute;inset:12% 18%;border:3px dashed rgba(208,142,44,.85);border-radius:50%}
+  .cam .hint{position:absolute;bottom:10px;left:0;right:0;text-align:center;color:#fff;font-size:15px;text-shadow:0 1px 3px #000}
+  .emp{display:flex;align-items:center;gap:12px;padding-bottom:14px;margin-bottom:14px;border-bottom:1px dashed var(--line)}
+  .avatar{flex:none;width:48px;height:48px;border-radius:50%;background:var(--goldlight);color:var(--gold2);border:2px solid var(--gold);display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700}
+  .emp .who small{margin:0;font-size:13px}
+  .emp .who b{display:block;font-size:19px;line-height:1.3}
+  .timebox{background:linear-gradient(160deg,var(--navy) 0%,var(--navy3) 100%);color:#fff;border-radius:16px;padding:16px 12px;text-align:center}
+  .clock{font-size:46px;font-weight:700;letter-spacing:1px;line-height:1.1;font-variant-numeric:tabular-nums}
+  .clock .sec{font-size:24px;color:#F3D9AE}
+  .clock .ampm{font-size:22px}
+  .date{font-size:16px;margin-top:6px;font-weight:500}
+  .gdate{font-size:14px;color:#F3D9AE;margin-top:2px}
+  .hello{text-align:center;font-size:17px;margin-bottom:6px}
+  .tools{display:flex;gap:10px}
+  .tools button,.tools a{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;text-decoration:none;border-radius:12px;margin-top:0;background:var(--card);color:var(--muted);border:1px solid var(--line);font-size:14px;font-weight:500;padding:12px 8px}
+  .verify h2{text-align:center;margin-bottom:4px}
+  .verify .sub{text-align:center;color:var(--muted);font-size:14px;margin:0 0 10px}
+  .ring{position:absolute;inset:10% 15%;border-radius:50%;border:4px solid rgba(208,142,44,.9);box-shadow:0 0 0 2000px rgba(0,0,0,.35);transition:border-color .3s}
+  .ring::after{content:'';position:absolute;left:8%;right:8%;height:3px;top:10%;background:linear-gradient(90deg,transparent,#F3D9AE,transparent);border-radius:3px;animation:scan 1.6s ease-in-out infinite alternate}
+  .ring.found{border-color:#4CAF7A}
+  .ring.found::after{animation:none;opacity:0}
+  @keyframes scan{from{top:10%}to{top:88%}}
+  .result{text-align:center;padding:10px 0 4px}
+  .badge{width:110px;height:110px;border-radius:50%;margin:6px auto 14px;display:flex;align-items:center;justify-content:center;animation:pop .35s ease-out}
+  .badge svg{width:62px;height:62px}
+  .badge.ok{background:#2E8B57;color:#fff;box-shadow:0 0 0 10px rgba(46,139,87,.15)}
+  .badge.no{background:var(--red);color:#fff;box-shadow:0 0 0 10px rgba(179,38,30,.15)}
+  @keyframes pop{0%{transform:scale(.4);opacity:0}80%{transform:scale(1.08)}100%{transform:scale(1);opacity:1}}
+  .result h3{margin:0 0 6px;font-size:21px}
+  .result p{margin:0;color:var(--muted);line-height:1.7;font-size:15px}
+  #resActions input{margin-top:14px}
+  .result .when{margin-top:8px;font-size:16px;color:var(--text);font-weight:700}
+  .steps{display:flex;gap:8px;margin-bottom:14px}
+  .step{flex:1;text-align:center;font-size:13px;font-weight:700;padding:8px 4px;border-radius:999px;background:var(--light);color:var(--muted)}
+  .step.on{background:var(--navy);color:#fff}
+  .step.done{background:#2E8B57;color:#fff}
+  .prog{position:absolute;left:12%;right:12%;bottom:42px;height:6px;border-radius:6px;background:rgba(255,255,255,.25);overflow:hidden}
+  .prog i{display:block;height:100%;width:0;background:var(--gold);transition:width .2s}
+  .shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transform:scaleX(-1)}
+  .geo{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;font-size:14px;font-weight:500;padding:9px 12px;border-radius:999px;background:var(--light);color:var(--muted)}
+  .geo .dot{flex:none;width:10px;height:10px;border-radius:50%;background:#9AA3AA}
+  .geo.ok{color:#1B6B40} .geo.ok .dot{background:#2E8B57;box-shadow:0 0 0 4px rgba(46,139,87,.2)}
+  .geo.out{color:var(--red)} .geo.out .dot{background:var(--red)}
+  .geo.wait .dot{background:var(--gold);animation:blink 1s infinite}
+  @keyframes blink{50%{opacity:.25}}
+  @media (prefers-color-scheme: dark){ .geo.ok{color:#8FD9AE} .geo.out{color:#F2B8B5} }
+  .punch button.locked{background:#A9B1B7;color:#F4F6F7;box-shadow:none;opacity:1;cursor:not-allowed}
+  @media (prefers-color-scheme: dark){ .punch button.locked{background:#323C44;color:#7F8B94} }
+  .punch button.done{background:#A9B1B7;color:#F4F6F7;box-shadow:none;cursor:default}
+  .punch button.done small{font-size:12px;font-weight:600;opacity:.95}
+  @media (prefers-color-scheme: dark){ .punch button.done{background:#323C44;color:#9AA5AE} }
+  .stay{margin-top:14px;padding:12px 14px;border-radius:14px;background:rgba(14,124,102,.08)}
+  .stay .sh{display:flex;justify-content:space-between;align-items:center;font-size:14px;margin-bottom:8px}
+  .stay .sh b{font-size:20px;font-variant-numeric:tabular-nums}
+  .stay .bar{height:10px;border-radius:6px;background:rgba(0,0,0,.08);overflow:hidden}
+  .stay .bar i{display:block;height:100%;width:0;background:#0E7C66;border-radius:6px;transition:width .6s}
+  .stay.full .bar i{background:#1E9E5A}
+  .stay small{display:block;margin-top:6px;font-size:12px;opacity:.75}
+  #mainId{direction:rtl;unicode-bidi:isolate}
+  #mainId .nid{direction:ltr;unicode-bidi:isolate;display:inline-block}
+  .who{flex:1;min-width:0}
+  .logout{flex:none;width:auto;margin:0;padding:8px 10px;border-radius:12px;background:var(--light);color:var(--muted);font-size:12px;font-weight:500;display:flex;flex-direction:column;align-items:center;gap:3px}
+  .logout svg{width:22px;height:22px}
+  .tools svg{width:22px;height:22px}
+  .geo.idle .dot{background:#9AA3AA}
+  .geo.warn{color:var(--gold2)} .geo.warn .dot{background:var(--gold)}
+  @media (prefers-color-scheme: dark){ .geo.warn{color:#E8B867} }
+  #win{margin-top:8px}
+  .rhead{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+  .rhead h2{margin:0}
+  .tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;background:var(--light);padding:4px;border-radius:12px}
+  .tabs button{margin:0;padding:9px;font-size:15px;background:none;color:var(--muted);border-radius:9px}
+  .tabs button.on{background:var(--card);color:var(--navy);box-shadow:0 1px 4px rgba(0,0,0,.12)}
+  @media (prefers-color-scheme: dark){ .tabs button.on{color:#E8B867} }
+  .pnav{display:flex;align-items:center;gap:8px;margin:12px 0}
+  .pnav b{flex:1;text-align:center;font-size:15px}
+  .pnav button{width:auto;margin:0;padding:8px 12px;font-size:13px;background:var(--light);color:var(--text)}
+  .lvrow{border:1px solid var(--line);border-radius:14px;padding:12px;margin-top:10px} .lvrow b{display:block} .lvrow small{display:block;color:var(--muted);margin-top:4px;line-height:1.6}
+  .lvrow .pl{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;margin-top:6px} .pl.w{background:var(--goldlight);color:var(--gold2)} .pl.y{background:#E3F2EA;color:#1B5E3A} .pl.n{background:#FCE8E6;color:var(--red)}
+  .lvrow .row button{margin-top:8px;padding:10px;font-size:15px}
+  .tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:6px}
+  .tile{border-radius:14px;padding:10px 6px;text-align:center}
+  .tile b{display:block;font-size:26px;line-height:1.2}
+  .tile span{font-size:13px;font-weight:500}
+  .t-ok{background:#E3F2EA;color:#1B6B40} .t-late{background:var(--goldlight);color:var(--gold2)} .t-abs{background:#FCE8E6;color:var(--red)}
+  @media (prefers-color-scheme: dark){ .t-ok{background:#183326;color:#8FD9AE} .t-late{color:#E8B867} .t-abs{background:#3A1F1D;color:#F2B8B5} }
+  .rnote{font-size:13px;color:var(--muted);margin:10px 0 2px}
+  .rrow{display:flex;align-items:center;gap:10px;padding:11px 2px;border-bottom:1px solid var(--line)}
+  .rrow:last-child{border-bottom:0}
+  .rrow .nm{flex:1;min-width:0}
+  .rrow .nm b{display:block;font-size:15px}
+  .rrow .nm small{margin:2px 0 0;font-size:12px}
+  .pills{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+  .pill{font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap}
+  .p-ok{background:#E3F2EA;color:#1B6B40} .p-late{background:var(--goldlight);color:var(--gold2)} .p-abs{background:#FCE8E6;color:var(--red)} .p-none{background:var(--light);color:var(--muted)}
+  @media (prefers-color-scheme: dark){ .p-ok{background:#183326;color:#8FD9AE} .p-late{color:#E8B867} .p-abs{background:#3A1F1D;color:#F2B8B5} }
+  .choice{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px}
+  .choice button{margin:0;padding:18px 8px;background:var(--light);color:var(--navy);display:flex;flex-direction:column;align-items:center;gap:8px;border:2px solid transparent;border-radius:16px}
+  .choice button.sel{border-color:var(--gold)}
+  .choice svg{width:32px;height:32px}
+  @media (prefers-color-scheme: dark){ .choice button{color:#E8B867} }
+  #pinBox input{margin-top:12px}
+  .hidden{display:none}
+  /* إطار قراءة الوجه: زوايا بدل الدائرة */
+  .ring{position:absolute;inset:14% 12% 18%;border:0;border-radius:28px;box-shadow:none;background:none}
+  .ring::before{content:'';position:absolute;inset:0;border-radius:28px;
+    background:linear-gradient(#F3D9AE,#F3D9AE) top left/38px 4px,linear-gradient(#F3D9AE,#F3D9AE) top left/4px 38px,
+      linear-gradient(#F3D9AE,#F3D9AE) top right/38px 4px,linear-gradient(#F3D9AE,#F3D9AE) top right/4px 38px,
+      linear-gradient(#F3D9AE,#F3D9AE) bottom left/38px 4px,linear-gradient(#F3D9AE,#F3D9AE) bottom left/4px 38px,
+      linear-gradient(#F3D9AE,#F3D9AE) bottom right/38px 4px,linear-gradient(#F3D9AE,#F3D9AE) bottom right/4px 38px;
+    background-repeat:no-repeat;filter:drop-shadow(0 0 6px rgba(0,0,0,.45));transition:filter .3s}
+  .ring::after{content:'';position:absolute;left:6%;right:6%;height:2px;top:8%;background:linear-gradient(90deg,transparent,rgba(243,217,174,.95),transparent);box-shadow:0 0 14px rgba(243,217,174,.8);border-radius:2px;animation:scan 1.8s ease-in-out infinite alternate}
+  .ring.found::before{background:linear-gradient(#5DD39E,#5DD39E) top left/38px 4px,linear-gradient(#5DD39E,#5DD39E) top left/4px 38px,
+      linear-gradient(#5DD39E,#5DD39E) top right/38px 4px,linear-gradient(#5DD39E,#5DD39E) top right/4px 38px,
+      linear-gradient(#5DD39E,#5DD39E) bottom left/38px 4px,linear-gradient(#5DD39E,#5DD39E) bottom left/4px 38px,
+      linear-gradient(#5DD39E,#5DD39E) bottom right/38px 4px,linear-gradient(#5DD39E,#5DD39E) bottom right/4px 38px;background-repeat:no-repeat;animation:pulse 1s ease-in-out infinite}
+  @keyframes pulse{50%{opacity:.55}}
+  .cam{border-radius:24px;box-shadow:0 10px 26px rgba(0,0,0,.25)}
+  .cam::after{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 62% at 50% 46%,transparent 60%,rgba(0,0,0,.35) 100%);pointer-events:none}
+  .cam .hint{z-index:2;bottom:14px;font-weight:700}
+  /* نافذة اختيار طريقة التحقق */
+  .sheet{position:fixed;inset:0;background:rgba(10,18,24,.55);display:flex;align-items:flex-end;justify-content:center;z-index:50}
+  .sheet .panel{background:var(--card);width:100%;max-width:460px;border-radius:24px 24px 0 0;padding:20px 18px calc(18px + env(safe-area-inset-bottom));animation:up .25s ease-out}
+  @keyframes up{from{transform:translateY(40px);opacity:0}}
+  .sheet h2{text-align:center;margin-bottom:4px} .sheet .sub{text-align:center;color:var(--muted);font-size:14px;margin:0 0 14px}
+  .choice button{padding:22px 8px;font-size:17px}
+  .tools button.soon{opacity:.55;cursor:not-allowed;position:relative} .tools button.soon i{font-style:normal;font-size:11px;background:var(--goldlight);color:var(--gold2);border-radius:99px;padding:1px 8px}
+  .sheet.hidden,.tools .hidden,#choiceCard .choice.hidden{display:none!important}
+  .tools a.on{color:var(--green,#0E7C66);border-color:currentColor}
+  .inst{margin-top:10px;font-size:13px;line-height:1.7}
+  small{color:var(--muted);display:block;margin-top:8px;line-height:1.6}
+</style>
+</head>
+<body>
+<header>
+  <div class="logo"><img src="aaba-logo.png" alt="جمعية آباء"></div>
+  <h1>بصمة الحضور والانصراف</h1>
+  <p id="orgName"></p>
+</header>
+
+<main>
+  <!-- 1) إدخال الرقم الوظيفي -->
+  <section id="vLogin" class="card hidden">
+    <h2>بيانات الدخول</h2>
+    <div id="rebindBox" class="hidden">
+      <label for="rbPin">رمزك البديل (4 أرقام)</label>
+      <input id="rbPin" type="password" inputmode="numeric" maxlength="4" placeholder="الرمز البديل">
+      <button class="primary" id="btnRebind">نقل بصمتي إلى هذا الجوال</button>
+      <button class="link" id="btnRebindNo">حساب آخر</button>
+    </div>
+    <p class="muted" style="margin:0 0 10px">ادخل بحساب بوابة الموظفين، أو افتح البصمة من زر «البصمة» داخل البوابة.</p>
+    <label for="empId">البريد الإلكتروني</label>
+    <input id="empId" type="email" inputmode="email" autocomplete="username" placeholder="name@aaba.sa" dir="ltr">
+    <label for="empPin" id="empPinL">كلمة المرور</label>
+    <input id="empPin" type="password" autocomplete="current-password" placeholder="كلمة مرور البوابة" dir="ltr">
+    <button class="primary" id="btnLogin">دخول</button>
+    <div id="loginMsg"></div>
+  </section>
+
+  <!-- 2) التسجيل الأول: (1) بصمة الوجه ثم (2) الرمز البديل -->
+  <section id="vEnroll" class="card hidden">
+    <div class="steps"><span class="step on" id="st1">١ بصمة الوجه</span><span class="step" id="st2">٢ الرمز البديل</span></div>
+    <h2 id="enrollTitle">الخطوة ١: بصمة الوجه</h2>
+    <p class="hello" id="enrollName"></p>
+    <div id="enrollFace">
+      <small>انظر للكاميرا مباشرة في مكان جيد الإضاءة، دون نظارة شمسية أو غطاء للوجه. يتم الالتقاط تلقائياً.</small>
+      <div class="cam"><video id="vidEnroll" playsinline muted autoplay></video><img id="enrollShot" class="shot hidden" alt=""><div class="ring" id="ringEnroll"></div><div class="prog"><i id="progEnroll"></i></div><div class="hint" id="hintEnroll"></div></div>
+      <button class="primary hidden" id="btnCapture">إعادة المحاولة</button>
+      <button class="primary hidden" id="btnNext">التالي: الرمز البديل</button>
+      <button class="link hidden" id="btnRetake">إعادة الالتقاط</button>
+    </div>
+    <div id="enrollPin" class="hidden">
+      <small id="pinIntro">اختر رمزاً من 4 أرقام، تستخدمه إذا تعذّرت بصمة الوجه.</small>
+      <label for="pin1">الرمز البديل</label>
+      <input id="pin1" type="password" inputmode="numeric" maxlength="4">
+      <label for="pin2">تأكيد الرمز</label>
+      <input id="pin2" type="password" inputmode="numeric" maxlength="4">
+      <button class="primary" id="btnEnroll">إرسال للاعتماد</button>
+      <button class="link" id="btnBackFace">رجوع لإعادة التقاط الوجه</button>
+      <small id="faceConsent">بالضغط على "إرسال للاعتماد" توافق على حفظ صورة وجهك لدى الموارد البشرية لغرض إثبات الحضور فقط.</small>
+    </div>
+    <div id="enrollMsg"></div>
+  </section>
+
+  <!-- 3) بانتظار الاعتماد -->
+  <section id="vPending" class="card hidden">
+    <h2>بانتظار اعتماد الإدارة</h2>
+    <p class="hello" id="pendingName"></p>
+    <div class="msg info" id="pendingMsg">تم استلام تسجيلك. ستعمل بصمتك بعد أن تراجع الإدارة صورتك وتعتمدها.</div>
+    <button class="secondary" id="btnRecheck">تحقّق من الحالة</button>
+    <button class="link" id="btnPendingOut">خروج</button>
+  </section>
+
+  <!-- 4) الشاشة الرئيسية -->
+  <section id="vMain" class="hidden">
+    <div class="card">
+      <div class="emp">
+        <div class="avatar" id="mainAvatar">؟</div>
+        <div class="who"><small>أهلاً وسهلاً</small><b id="mainName"></b><small id="mainId"></small></div>
+        <button class="logout" id="btnLogout" aria-label="تسجيل الخروج"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v9"/><path d="M6.4 6.4a8 8 0 1 0 11.2 0"/></svg>خروج</button>
+      </div>
+      <div class="timebox">
+        <div class="clock" dir="ltr"><span id="clock">--:--</span><span class="sec" id="clockSec"></span> <span class="ampm" id="clockAmPm"></span></div>
+        <div class="date" id="today"></div>
+        <div class="gdate" id="todayG"></div>
+      </div>
+      <div class="geo wait" id="geo"><span class="dot"></span><span id="geoText">جاري تحديد موقعك...</span></div>
+      <div class="geo idle" id="win"><span class="dot"></span><span id="winText"></span></div>
+      <div class="punch">
+        <button class="in locked" id="btnIn" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><path d="M10 17l5-5-5-5"/><path d="M15 12H3"/></svg><span id="inLbl">تسجيل حضور</span><small id="inAt"></small></button>
+        <button class="out locked" id="btnOut" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5"/><path d="M21 12H9"/></svg>تسجيل انصراف</button>
+      </div>
+      <div class="stay hidden" id="stay">
+        <div class="sh"><span>مدة الحضور</span><b id="stayTime" dir="ltr">0:00:00</b><span id="stayPct">0%</span></div>
+        <div class="bar"><i id="stayBar"></i></div>
+        <small id="stayNote"></small>
+      </div>
+      <div id="mainMsg"></div>
+    </div>
+
+    <div class="tools">
+      <button id="btnReports"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M8 17v-5"/><path d="M13 17V8"/><path d="M18 17v-8"/></svg>التقارير</button>
+      <button id="btnLeave" class="soon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M9 16l2 2 4-4"/></svg>الإجازات والاستئذان</button>
+      <a id="lnkRemind" href="reminders.ics" role="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8a6 6 0 1 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg><span id="pushLbl">التنبيهات</span></a>
+    </div>
+  </section>
+
+
+  <!-- 6) التقارير -->
+  <section id="vReport" class="hidden">
+    <div class="card">
+      <div class="rhead">
+        <h2 id="repTitle">التقارير</h2>
+        <button class="logout" id="btnRepBack"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>رجوع</button>
+      </div>
+      <div class="tabs" id="repTabs"><button data-p="day" class="on">يومي</button><button data-p="week">أسبوعي</button><button data-p="month">شهري</button></div>
+      <div class="pnav"><button id="repPrev">السابق</button><b id="repLabel"></b><button id="repNext">التالي</button></div>
+      <div class="tiles">
+        <div class="tile t-ok"><b id="tP">-</b><span>حاضر</span></div>
+        <div class="tile t-late"><b id="tL">-</b><span>متأخر</span></div>
+        <div class="tile t-abs"><b id="tA">-</b><span>غائب</span></div>
+      </div>
+      <div id="repBody"></div>
+    </div>
+  </section>
+
+  <!-- 5) التحقق بالوجه (للدخول والتحضير) -->
+  <div class="card verify hidden" id="camCard">
+  <div id="scanBox">
+    <h2 id="scanTitle">التحقق من بصمة الوجه</h2>
+    <p class="sub" id="scanSub">ضع وجهك داخل الإطار وانظر للكاميرا</p>
+    <div class="cam"><video id="vidPunch" playsinline muted autoplay></video><div class="ring" id="ring"></div><div class="hint" id="hintPunch"></div></div>
+    <button class="link" id="btnCancel">إلغاء</button>
+  </div>
+  <div class="result hidden" id="resultBox">
+    <div class="badge" id="resBadge"></div>
+    <h3 id="resTitle"></h3>
+    <p id="resText"></p>
+    <div class="when" id="resWhen"></div>
+    <div id="resActions"></div>
+  </div>
+  </div>
+
+  <div id="loading" class="card"><div class="msg info">جاري التحميل...</div></div>
+</main>
+    <div class="sheet hidden" id="choiceCard"><div class="panel">
+      <h2 id="choiceTitle">تسجيل حضور</h2>
+      <p class="sub">اختر طريقة التحقق</p>
+      <div class="choice">
+        <button id="chFace"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><path d="M9 9h.01"/><path d="M15 9h.01"/></svg>بصمة الوجه</button>
+        <button id="chPin"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.5" cy="15.5" r="4.5"/><path d="M10.7 12.3L21 2"/><path d="M16 7l3 3"/><path d="M19 4l2 2"/></svg>الرمز البديل</button>
+      </div>
+      <div id="pinBox" class="hidden">
+        <input id="pinFallback" type="password" inputmode="numeric" maxlength="4" placeholder="الرمز البديل (4 أرقام)">
+        <button class="primary" id="btnPinGo">تأكيد</button>
+        <small id="pinReviewNote">التسجيل بالرمز البديل يُعلَّم للمراجعة من الإدارة.</small>
+      </div>
+      <div id="pinMsg"></div>
+      <button class="link" id="btnChoiceCancel">إلغاء</button>
+    </div></div>
+
+
+<script>
+/* ======================================================================
+   ضع رابط تطبيق الويب (Web app URL) من Apps Script بين علامتي التنصيص
+   ====================================================================== */
+/* رابط الخادم بعد نشر Code.gs كتطبيق ويب (انظر README) */
+const API_URL = 'https://script.google.com/macros/s/AKfycbx5zIF4YW9xgMP4tHulkMBDUzNgBa7U0iPcEfDxMpqt_WWJaZV7gLSV8gU106GRQQcwrQ/exec';
+
+const MODELS = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.15/model/';
+/* رقم إصدار الصفحة: عند تغييره (تحديث الموقع) يُطلب تسجيل الدخول من جديد */
+const APP_VER = '2026-11-23-aaba';
+const ADMIN_NIDS = [];   // أرقام هويات من يرى زر التقارير (ضعها نفسها في Code.gs)
+const $ = id => document.getElementById(id);
+const store = {
+  get(k){ try { return localStorage.getItem(k); } catch(e){ return null; } },
+  set(k,v){ try { localStorage.setItem(k,v); } catch(e){} },
+  del(k){ try { localStorage.removeItem(k); } catch(e){} }
+};
+let todayP = { date:'', in:'', out:'' }, noFaceMode = false;
+let geoWatch = null, lastLoc = null, inRange = false, enrollData = null;
+let gateMode = false, empName = '', cfg = null, empId = null, stream = null, modelsReady = null, punching = false, faceFails = 0;
+
+/* ---------- معرف الجهاز (يُربط بالمعلم عند التسجيل) ---------- */
+function deviceId(){
+  let d = store.get('fp_device');
+  if (!d){
+    d = (crypto.randomUUID ? crypto.randomUUID() : Date.now() + '-' + Math.random().toString(36).slice(2));
+    store.set('fp_device', d);
+  }
+  return d;
+}
+
+/* ---------- الاتصال بالخادم ---------- */
+async function api(data){
+  const t = store.get('bs_token'); if (t && !data.token) data.token = t;
+  const r = await fetch(API_URL, { method:'POST', body: JSON.stringify(data) });
+  const j = await r.json();
+  if (j && j.auth){ store.del('bs_token'); store.del('fp_emp'); empId = null; }
+  return j;
+}
+function nearZone(lat, lng){
+  const zs = (cfg && cfg.zones) || []; let best = null;
+  zs.forEach(z => { const d = Math.round(distanceM(lat, lng, z.lat, z.lng)); if (!best || d - z.radius < best.d - best.r) best = { d: d, r: z.radius, name: z.name }; });
+  return best;
+}
+
+function show(view){
+  ['vLogin','vEnroll','vPending','vMain','vReport','loading'].forEach(v => $(v).classList.toggle('hidden', v !== view));
+  if (view !== 'vMain') { stopCam(); $('camCard').classList.add('hidden'); }
+}
+function msg(el, text, type){ $(el).innerHTML = text ? '<div class="msg ' + type + '"></div>' : ''; if (text) $(el).firstChild.textContent = text; }
+
+/* ---------- نماذج التعرف على الوجه ---------- */
+/* مكتبة الوجه تُحمَّل في الخلفية بعد ظهور الصفحة (كانت تؤخر فتح الصفحة حتى تكتمل) */
+let faceLib = null;
+function loadFaceLib(){
+  if (window.faceapi) return Promise.resolve();
+  if (!faceLib) faceLib = new Promise((ok, no) => { const sc = document.createElement('script'); sc.src = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@1.7.15/dist/face-api.js'; sc.async = true;
+    sc.onload = ok; sc.onerror = () => { faceLib = null; no(new Error('تعذّر تحميل مكتبة الوجه، تحقق من الاتصال.')); }; document.head.appendChild(sc); });
+  return faceLib;
+}
+function loadModels(){
+  if (!modelsReady){
+    modelsReady = loadFaceLib().then(() => Promise.all([
+      faceapi.nets.tinyFaceDetector.loadFromUri(MODELS),
+      faceapi.nets.faceLandmark68Net.loadFromUri(MODELS),
+      faceapi.nets.faceRecognitionNet.loadFromUri(MODELS)
+    ])).then(async () => {
+      /* تسخين المحرك حتى تكون أول قراءة للوجه سريعة */
+      try { const c = document.createElement('canvas'); c.width = c.height = 160;
+            await faceapi.detectSingleFace(c, new faceapi.TinyFaceDetectorOptions({ inputSize:224 })); } catch(e){}
+    }).catch(e => { modelsReady = null; throw e; });   // فشل التحميل: تُعاد المحاولة في المرة القادمة
+  }
+  return modelsReady;
+}
+
+async function startCam(videoId){
+  stopCam();
+  stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:'user', width:{ideal:640}, height:{ideal:480} }, audio:false });
+  const v = $(videoId); v.srcObject = stream; await v.play();
+  return v;
+}
+function stopCam(){ if (stream){ stream.getTracks().forEach(t => t.stop()); stream = null; } }
+
+/* يلتقط وجهاً واحداً واضحاً ويعيد البصمة الرقمية */
+async function detect(video, size){
+  const opt = new faceapi.TinyFaceDetectorOptions({ inputSize:size || 224, scoreThreshold:0.5 });
+  const res = await faceapi.detectSingleFace(video, opt).withFaceLandmarks().withFaceDescriptor();
+  if (!res) return null;
+  const box = res.detection.box, w = video.videoWidth || 640;
+  if (box.width < w * 0.22) return { tooFar:true };
+  if ((res.detection.score || 1) < 0.6) return { weak:true };
+  return { descriptor: Array.from(res.descriptor) };
+}
+function euclid(a, b){ let s = 0; for (let i = 0; i < a.length; i++) s += (a[i] - b[i]) ** 2; return Math.sqrt(s); }
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+function snapshot(video){
+  const c = document.createElement('canvas'), s = 480 / Math.max(video.videoWidth, video.videoHeight);
+  c.width = Math.round(video.videoWidth * s); c.height = Math.round(video.videoHeight * s);
+  c.getContext('2d').drawImage(video, 0, 0, c.width, c.height);
+  return c.toDataURL('image/jpeg', 0.7);
+}
+
+/* يقرأ الوجه بسرعة؛ عند أخذ أكثر من عينة يتأكد أنها متسقة (نفس الوجه وثابت) ثم يأخذ المتوسط */
+async function captureFace(video, hintId, samples, timeoutMs, o){
+  o = o || {};
+  const got = []; let photo = null; const end = Date.now() + timeoutMs;
+  while (Date.now() < end && got.length < samples){
+    const r = await detect(video, o.size);
+    if (!r) $(hintId).textContent = 'لم يُكتشف وجه، انظر للكاميرا';
+    else if (r.tooFar) $(hintId).textContent = 'اقترب من الكاميرا قليلاً';
+    else if (r.weak) $(hintId).textContent = 'ثبّت وجهك وحسّن الإضاءة';
+    else if (got.length && euclid(got[0], r.descriptor) > 0.42){ got.length = 0; photo = null; $(hintId).textContent = 'ثبّت وجهك ولا تتحرك'; }
+    else {
+      got.push(r.descriptor); if (!photo) photo = snapshot(video);
+      $(hintId).textContent = samples > 1 ? 'جاري توثيق سمات الوجه... ' + got.length + '/' + samples : 'تمت قراءة الوجه';
+    }
+    if (o.prog) o.prog(got.length / samples);
+    if (got.length < samples) await sleep(o.gap == null ? 60 : o.gap);
+  }
+  if (got.length < samples) return null;
+  const avg = got[0].map((_, i) => got.reduce((s, d) => s + d[i], 0) / got.length);
+  return { descriptor: avg, photo };
+}
+
+/* ---------- الموقع ---------- */
+function getLocation(){
+  return new Promise((resolve, reject) => {
+    if (!navigator.geolocation) return reject(new Error('جهازك لا يدعم تحديد الموقع'));
+    navigator.geolocation.getCurrentPosition(
+      p => resolve({ lat:p.coords.latitude, lng:p.coords.longitude, accuracy:p.coords.accuracy }),
+      e => reject(new Error(e.code === 1 ? 'يجب السماح بالوصول إلى الموقع من إعدادات المتصفح' : 'تعذّر تحديد موقعك، أعد المحاولة')),
+      { enableHighAccuracy:true, timeout:20000, maximumAge:0 }
+    );
+  });
+}
+function distanceM(a, b, c, d){
+  const R = 6371000, t = x => x * Math.PI / 180;
+  const h = Math.sin(t(c - a) / 2) ** 2 + Math.cos(t(a)) * Math.cos(t(c)) * Math.sin(t(d - b) / 2) ** 2;
+  return 2 * R * Math.asin(Math.sqrt(h));
+}
+
+/* ---------- متابعة الموقع: تفعيل أزرار البصمة داخل النطاق فقط ---------- */
+function setGeo(state, text){ $('geo').className = 'geo ' + state; $('geoText').textContent = text; }
+/* ---------- أوقات الدوام (الخادم هو المرجع، وهذه للعرض وتعطيل الأزرار) ---------- */
+const RULES = () => (cfg && cfg.rules) || { days:[0,1,2,3], start:'15:45', late:'16:05', end:'18:00' };
+function hm(t){ const a = String(t).split(':'); return +a[0] * 60 + +a[1]; }
+function ampm(t){ const m = hm(t), h = Math.floor(m / 60); return (h % 12 || 12) + ':' + ('0' + m % 60).slice(-2) + (h < 12 ? ' ص' : ' م'); }
+function riyadhNow(){
+  const p = {}; new Intl.DateTimeFormat('en-GB', { timeZone:'Asia/Riyadh', year:'numeric', month:'2-digit', day:'2-digit', hour:'2-digit', minute:'2-digit', weekday:'short', hourCycle:'h23' })
+    .formatToParts(new Date()).forEach(x => p[x.type] = x.value);
+  return { date: p.year + '-' + p.month + '-' + p.day, min: +p.hour * 60 + +p.minute, dow: ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'].indexOf(p.weekday) };
+}
+function timeState(){
+  const r = RULES(), n = riyadhNow();
+  if (r.days.indexOf(n.dow) === -1) return { ok:false, st:'idle', text:'اليوم ليس يوم دوام (من الأحد إلى الأربعاء)' };
+  if (n.min < hm(r.start)) return { ok:false, st:'idle', text:'تبدأ البصمة الساعة ' + ampm(r.start) };
+  if (n.min > hm(r.end)) return { ok:false, st:'out', text:'انتهى وقت البصمة لهذا اليوم (' + ampm(r.end) + ')' };
+  if (n.min >= hm(r.late)) return { ok:true, st:'warn', text:'الحضور الآن متأخر • البصمة حتى ' + ampm(r.end) };
+  return { ok:true, st:'ok', text:'وقت البصمة من ' + ampm(r.start) + ' إلى ' + ampm(r.end) };
+}
+function lockPunch(geoLock){
+  const t = timeState(), lock = geoLock || !t.ok;
+  $('win').className = 'geo ' + t.st; $('winText').textContent = t.text;
+  ['btnIn','btnOut','btnPinGo'].forEach(id => { $(id).disabled = lock || punching; $(id).classList.toggle('locked', lock); });
+  const done = !!todayIn();
+  $('btnIn').classList.toggle('done', done);
+  if (done){ $('btnIn').disabled = true; $('btnIn').classList.remove('locked'); }
+  $('inLbl').textContent = done ? 'تم تسجيل الحضور' : 'تسجيل حضور';
+  $('inAt').textContent = done ? ampm(todayIn()) : '';
+}
+/* ---------- حضور اليوم ومؤقت مدة الحضور (ساعة ونصف = 100%) ---------- */
+const STAY_MIN = 90;
+function todayIn(){ return todayP.date === riyadhNow().date ? todayP.in : ''; }
+function todayOut(){ return todayP.date === riyadhNow().date ? todayP.out : ''; }
+function setToday(t){ todayP = { date:riyadhNow().date, in:(t && t.in) || '', out:(t && t.out) || '' }; lockPunch(!inRange); drawStay(); }
+function nowHM(){ const n = riyadhNow(); return ('0' + Math.floor(n.min / 60)).slice(-2) + ':' + ('0' + n.min % 60).slice(-2); }
+function drawStay(){
+  const tin = todayIn(), box = $('stay');
+  if (!tin){ box.classList.add('hidden'); return; }
+  box.classList.remove('hidden');
+  const p = {}; new Intl.DateTimeFormat('en-GB', { timeZone:'Asia/Riyadh', hour:'2-digit', minute:'2-digit', second:'2-digit', hourCycle:'h23' })
+    .formatToParts(new Date()).forEach(x => p[x.type] = x.value);
+  const nowS = +p.hour * 3600 + +p.minute * 60 + +p.second, tout = todayOut();
+  const endS = tout ? hm(tout) * 60 : nowS;
+  const sec = Math.max(0, endS - hm(tin) * 60), pct = Math.min(100, Math.floor(sec / (STAY_MIN * 60) * 100));
+  $('stayTime').textContent = Math.floor(sec / 3600) + ':' + ('0' + Math.floor(sec % 3600 / 60)).slice(-2) + ':' + ('0' + sec % 60).slice(-2);
+  $('stayPct').textContent = pct + '%'; $('stayBar').style.width = pct + '%';
+  box.classList.toggle('full', pct >= 100);
+  $('stayNote').textContent = 'الحضور ' + ampm(tin) + (tout ? ' • الانصراف ' + ampm(tout) : '') + (pct >= 100 ? ' • أكملت ساعة ونصف ✔' : '');
+}
+function startGeo(){
+  if (!navigator.geolocation){ setGeo('out', 'جهازك لا يدعم تحديد الموقع'); return lockPunch(true); }
+  if (geoWatch !== null) return evalRange();
+  lockPunch(true); setGeo('wait', 'جاري تحديد موقعك...');
+  geoWatch = navigator.geolocation.watchPosition(
+    p => { lastLoc = { lat:p.coords.latitude, lng:p.coords.longitude, accuracy:p.coords.accuracy, t:Date.now() }; evalRange(); },
+    e => { inRange = false; lockPunch(true); setGeo('out', e.code === 1 ? 'اسمح بالوصول إلى الموقع من إعدادات المتصفح' : 'تعذّر تحديد موقعك، تأكد من تشغيل الموقع'); },
+    { enableHighAccuracy:true, maximumAge:5000, timeout:30000 }
+  );
+}
+function stopGeo(){ if (geoWatch !== null){ navigator.geolocation.clearWatch(geoWatch); geoWatch = null; } lastLoc = null; inRange = false; }
+function evalRange(){
+  if (!lastLoc) return;
+  const z = nearZone(lastLoc.lat, lastLoc.lng), acc = Math.round(lastLoc.accuracy);
+  if (!z){ inRange = false; setGeo('out', 'لم يُحدَّد لك نطاق فرع — راجع الموارد البشرية'); return lockPunch(true); }
+  if (z.d <= z.r && acc <= 150){ inRange = true; setGeo('ok', 'أنت داخل نطاق ' + z.name); }
+  else if (z.d <= z.r){ inRange = false; setGeo('wait', 'جاري تحسين دقة الموقع (' + acc + ' م)...'); }
+  else { inRange = false; setGeo('out', 'خارج نطاق ' + z.name + ' - تبعد ' + z.d + ' م'); }
+  lockPunch(!inRange);
+}
+/* أحدث موقع إن كان حديثاً، وإلا يطلب موقعاً جديداً */
+async function freshLocation(){
+  if (lastLoc && Date.now() - lastLoc.t < 20000) return lastLoc;
+  return getLocation();
+}
+
+/* ---------- التدفق ---------- */
+async function loadCfg(){ try { cfg = await api({ action:'config' }); } catch(e){ cfg = null; } if (cfg && !cfg.ok) cfg = null; if (cfg) $('orgName').textContent = (cfg.name || 'جمعية آباء') + (cfg.sched ? ' — ' + cfg.sched.name : ''); }
+async function boot(){
+  standaloneUi();
+  loadModels().catch(() => {});
+  const m = /[#&]sso=([\w]+)/.exec(location.hash || '');
+  if (m){
+    history.replaceState(null, '', location.pathname);
+    show('loading');
+    try { const r = await api({ action:'sso', code: m[1] }); if (r.ok){ store.set('bs_token', r.token); store.set('fp_ver', APP_VER); } else { show('vLogin'); msg('loginMsg', r.msg, 'err'); return; } }
+    catch(e){ show('vLogin'); msg('loginMsg', 'تعذّر الاتصال بالخادم. تحقق من الإنترنت.', 'err'); return; }
+  }
+  $('empId').value = store.get('fp_nid') || '';
+  if (store.get('bs_token') && store.get('fp_ver') !== APP_VER) store.del('bs_token');
+  if (store.get('bs_token')){ empId = store.get('fp_nid') || 'me'; await loadCfg(); await route(); }
+  else { show('vLogin'); if (store.get('fp_nid')) $('empPin').focus(); }
+}
+
+async function route(){
+  show('loading');
+  let st;
+  try { st = await api({ action:'status', id:empId, device:deviceId() }); }
+  catch(e){ show('vLogin'); msg('loginMsg', 'تعذّر الاتصال بالخادم. تحقق من الإنترنت.', 'err'); return; }
+  if (!st.ok){ store.del('fp_emp'); show('vLogin'); msg('loginMsg', st.msg, 'err'); return; }
+  if (!cfg) await loadCfg();
+  noFaceMode = !!st.noFace;
+  if (noFaceMode && st.status !== 'معتمد'){
+    $('enrollName').textContent = 'أهلاً ' + st.name; show('vEnroll'); enrollNoFace();
+  } else if (st.status === 'غير مسجل' || st.status === 'مرفوض'){
+    $('enrollName').textContent = 'أهلاً ' + st.name;
+    show('vEnroll'); enrollStep(1);
+    startEnrollCapture();
+    if (st.status === 'مرفوض') msg('enrollMsg', 'رُفض تسجيلك السابق، يرجى التسجيل مجدداً بصورة أوضح.', 'err');
+  } else if (st.status === 'قيد المراجعة'){
+    $('pendingName').textContent = st.name; show('vPending');
+  } else {
+    empName = st.name || '';
+    $('mainName').textContent = st.name || ''; $('mainAvatar').textContent = (st.name || '؟').trim().charAt(0);
+    $('mainId').innerHTML = cfg && cfg.sched ? esc2(cfg.sched.name) + ': ' + cfg.sched.periods.map(p => ampm(p.start) + ' – ' + ampm(p.end)).join(' و ') + (cfg.today && !cfg.today.work ? ' — ' + (cfg.today.holiday || cfg.today.leave || 'ليس يوم دوام') : '') : 'لم يُحدَّد وقت دوامك';
+    setToday(st.today);
+    if (st.otherDevice){ show('vLogin'); rbMode(true); $('rbPin').value = ''; msg('loginMsg', 'هذا ليس جوالك المسجل. يمكنك نقل بصمتك إلى هذا الجوال برمزك البديل.', 'info'); return; }
+    rbMode(false);
+    if (!noFaceMode) loadModels().catch(() => {});
+    $('btnReports').classList.remove('hidden');
+    enterMain();
+  }
+}
+
+$('btnLogin').onclick = async () => {
+  const v = $('empId').value.trim().toLowerCase(), pw = $('empPin').value;
+  if (!v || !pw) return msg('loginMsg', 'أدخل بريدك وكلمة مرور البوابة', 'err');
+  const bl = $('btnLogin'); bl.disabled = true; msg('loginMsg', 'جاري التحقق...', 'info');
+  try {
+    const r = await api({ action:'login', email:v, password:pw });
+    if (!r.ok) return msg('loginMsg', r.msg, 'err');
+    store.set('bs_token', r.token); store.set('fp_nid', v); store.set('fp_ver', APP_VER); $('empPin').value = ''; empId = v;
+    await loadCfg(); return route();
+  } catch(e){ return msg('loginMsg', 'تعذّر الاتصال بالخادم. تحقق من الإنترنت.', 'err'); }
+  finally { bl.disabled = false; }
+};
+$('empPin').onkeydown = e => { if (e.key === 'Enter') $('btnLogin').onclick(); };
+
+/* ---------- التسجيل الأول ---------- */
+function enrollStep(n){
+  $('enrollFace').classList.toggle('hidden', n !== 1); $('enrollPin').classList.toggle('hidden', n !== 2);
+  $('st1').className = 'step ' + (n === 1 ? 'on' : 'done'); $('st2').className = 'step' + (n === 2 ? ' on' : '');
+  $('enrollTitle').textContent = n === 1 ? 'الخطوة ١: بصمة الوجه' : 'الخطوة ٢: الرمز البديل';
+  msg('enrollMsg', '', '');
+  if (n === 2){ $('pin1').value = $('pin2').value = ''; $('pin1').focus(); }
+}
+
+/* المعفى من بصمة الوجه بقرار الإدارة: ينشئ رمزاً بديلاً فقط ويُعتمد مباشرة */
+function enrollNoFace(){
+  enrollStep(2);
+  $('st1').classList.add('hidden'); $('st2').textContent = 'الرمز البديل';
+  $('enrollTitle').textContent = 'إنشاء الرمز البديل';
+  $('pinIntro').textContent = 'اختر رمزاً من 4 أرقام. هذا الرمز يقوم مقام بصمة الوجه، وستستخدمه في كل تسجيل حضور وانصراف.';
+  $('btnEnroll').textContent = 'حفظ الرمز'; $('btnBackFace').classList.add('hidden'); $('faceConsent').classList.add('hidden');
+}
+
+async function startEnrollCapture(){
+  enrollData = null;
+  ['btnCapture','btnNext','btnRetake','enrollShot'].forEach(id => $(id).classList.add('hidden'));
+  $('ringEnroll').classList.remove('found'); $('progEnroll').style.width = '0%'; msg('enrollMsg', '', '');
+  try {
+    $('hintEnroll').textContent = 'جاري تشغيل الكاميرا...';
+    const camP = startCam('vidEnroll');
+    await loadModels(); const v = await camP;
+    $('hintEnroll').textContent = 'انظر للكاميرا';
+    const face = await captureFace(v, 'hintEnroll', 3, 20000, { size:320, gap:90, prog: x => $('progEnroll').style.width = Math.round(x * 100) + '%' });
+    stopCam();
+    if (!face){ $('hintEnroll').textContent = ''; msg('enrollMsg', 'لم أتمكن من التقاط وجهك بوضوح. حسّن الإضاءة وانظر للكاميرا مباشرة.', 'err'); $('btnCapture').classList.remove('hidden'); return; }
+    enrollData = face;
+    $('enrollShot').src = face.photo; $('enrollShot').classList.remove('hidden');
+    $('ringEnroll').classList.add('found'); $('hintEnroll').textContent = 'تم التقاط بصمة الوجه ✓';
+    $('btnNext').classList.remove('hidden'); $('btnRetake').classList.remove('hidden');
+  } catch(e){
+    stopCam(); $('hintEnroll').textContent = '';
+    msg('enrollMsg', 'تعذّر تشغيل الكاميرا. اسمح للمتصفح باستخدامها ثم أعد المحاولة.', 'err');
+    $('btnCapture').classList.remove('hidden');
+  }
+}
+$('btnCapture').onclick = startEnrollCapture;
+$('btnRetake').onclick = startEnrollCapture;
+$('btnNext').onclick = () => enrollStep(2);
+$('btnBackFace').onclick = () => { enrollStep(1); startEnrollCapture(); };
+
+$('btnEnroll').onclick = async () => {
+  const p1 = $('pin1').value, p2 = $('pin2').value;
+  if (!enrollData && !noFaceMode){ enrollStep(1); return startEnrollCapture(); }
+  if (!/^\d{4}$/.test(p1)) return msg('enrollMsg', 'الرمز البديل يجب أن يكون 4 أرقام', 'err');
+  if (p1 !== p2) return msg('enrollMsg', 'الرمزان غير متطابقين', 'err');
+  const b = $('btnEnroll'); b.disabled = true; msg('enrollMsg', 'جاري الإرسال...', 'info');
+  try {
+    const r = noFaceMode ? await api({ action:'enroll', id:empId, device:deviceId(), pin:p1 })
+                         : await api({ action:'enroll', id:empId, device:deviceId(), pin:p1, descriptor:enrollData.descriptor, photo:enrollData.photo });
+    if (r.ok && r.approved){ msg('enrollMsg', r.msg, 'ok'); b.disabled = false; return route(); }
+    if (r.ok){ enrollData = null; $('pendingName').textContent = ''; show('vPending'); msg('pendingMsg', r.msg, 'info'); }
+    else msg('enrollMsg', r.msg, 'err');
+  } catch(e){ msg('enrollMsg', 'تعذّر الاتصال بالخادم. أعد المحاولة.', 'err'); }
+  b.disabled = false;
+};
+
+$('btnRecheck').onclick = route;
+/* تسجيل الخروج: يبقى رقم الهوية محفوظاً ويُطلب التحقق بالوجه عند الدخول مجدداً */
+function logout(){
+  try { api({ action:'logout' }); } catch(e){}
+  stopCam(); stopGeo(); gateMode = false; store.del('fp_emp'); store.del('bs_token'); store.del('fp_ver'); empId = null; cfg = null; closeChoice();
+  $('empId').value = store.get('fp_nid') || ''; show('vLogin'); msg('loginMsg', 'تم تسجيل الخروج.', 'info');
+}
+/* تغيير رقم الهوية: يمسح الرقم المحفوظ */
+function changeId(){ logout(); store.del('fp_nid'); $('empId').value = ''; msg('loginMsg', '', ''); }
+$('btnLogout').onclick = logout;
+$('btnPendingOut').onclick = logout;
+
+const ICON_OK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7"/></svg>';
+const ICON_NO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+let lastType = 'in';
+
+function scanMode(title, sub){
+  $('scanTitle').textContent = title; $('scanSub').textContent = sub;
+  $('ring').classList.remove('found'); $('hintPunch').textContent = '';
+  $('btnCancel').classList.toggle('hidden', gateMode);
+  $('scanBox').classList.remove('hidden'); $('resultBox').classList.add('hidden');
+  $('camCard').classList.remove('hidden');
+  $('camCard').scrollIntoView({ behavior:'smooth', block:'center' });
+}
+
+/* يعرض نتيجة التحقق: علامة صح أو خطأ */
+function showResult(ok, title, text, retry){
+  stopCam();
+  $('scanBox').classList.add('hidden'); $('resultBox').classList.remove('hidden');
+  $('camCard').classList.remove('hidden');
+  const b = $('resBadge'); b.className = 'badge ' + (ok ? 'ok' : 'no'); b.innerHTML = ok ? ICON_OK : ICON_NO;
+  $('resTitle').textContent = title; $('resText').textContent = text || '';
+  $('resWhen').textContent = ok && !gateMode ? new Date().toLocaleTimeString('ar-SA', { hour:'numeric', minute:'2-digit', timeZone:'Asia/Riyadh' }) : '';
+  const act = $('resActions'); act.innerHTML = '';
+  const mk = (label, cls, fn) => { const x = document.createElement('button'); x.className = cls; x.textContent = label; x.onclick = fn; act.appendChild(x); return x; };
+  if (ok){
+    if (gateMode){ mk('دخول', 'primary', enterMain); setTimeout(() => { if (gateMode) enterMain(); }, 1500); }
+    else mk('تم', 'primary', closeVerify);
+    return;
+  }
+  if (gateMode){
+    if (retry) mk('إعادة المحاولة ببصمة الوجه', 'primary', gateVerify);
+    mk('الدخول بالرمز البديل', 'secondary', gatePinForm);
+    mk('خروج', 'link', logout);
+  } else {
+    if (retry) mk('إعادة المحاولة ببصمة الوجه', 'primary', () => punch(lastType));
+    mk('استخدام الرمز البديل', 'secondary', () => { closeVerify(); openChoice(lastType, true); });
+    mk('إلغاء', 'link', closeVerify);
+  }
+  $('camCard').scrollIntoView({ behavior:'smooth', block:'center' });
+}
+function closeVerify(){ stopCam(); $('camCard').classList.add('hidden'); }
+
+/* ---------- التحقق بالوجه عند الدخول ---------- */
+function enterMain(){ gateMode = false; closeVerify(); show('vMain'); startGeo(); pushUi(); }
+
+async function gateVerify(){
+  gateMode = true; show('none');
+  scanMode('التحقق من هويتك', 'أهلاً ' + empName + '، انظر للكاميرا للدخول');
+  try {
+    $('hintPunch').textContent = 'جاري تشغيل الكاميرا...';
+    const camP = startCam('vidPunch');
+    await loadModels(); const v = await camP;
+    $('hintPunch').textContent = 'انظر للكاميرا';
+    const face = await captureFace(v, 'hintPunch', 1, 10000);
+    if (!face) return showResult(false, 'لم يُلتقط الوجه', 'تأكد من الإضاءة وأن وجهك داخل الإطار ثم أعد المحاولة.', true);
+    $('ring').classList.add('found'); $('hintPunch').textContent = 'جاري مطابقة الوجه...';
+    const r = await api({ action:'verify', method:'face', id:empId, device:deviceId(), descriptor:face.descriptor, photo:face.photo });
+    if (r.ok || r.msg === 'إجراء غير معروف') showResult(true, 'تم التحقق من هويتك', 'أهلاً ' + empName);
+    else showResult(false, 'لم يتم التحقق', r.msg, true);
+  } catch(e){
+    showResult(false, 'تعذّر التحقق', e.message.indexOf('Permission') !== -1 || e.name === 'NotAllowedError' ? 'اسمح للمتصفح باستخدام الكاميرا ثم أعد المحاولة.' : e.message, true);
+  }
+}
+
+function gatePinForm(){
+  const act = $('resActions'); act.innerHTML = '';
+  const inp = document.createElement('input'); inp.type = 'password'; inp.inputMode = 'numeric'; inp.maxLength = 4; inp.placeholder = 'الرمز البديل';
+  const ok = document.createElement('button'); ok.className = 'primary'; ok.textContent = 'تحقق بالرمز';
+  const back = document.createElement('button'); back.className = 'link'; back.textContent = 'رجوع لبصمة الوجه'; back.onclick = gateVerify;
+  const m = document.createElement('div');
+  ok.onclick = async () => {
+    if (!/^\d{4}$/.test(inp.value)){ m.innerHTML = '<div class="msg err">أدخل الرمز البديل (4 أرقام)</div>'; return; }
+    ok.disabled = true;
+    try {
+      const r = await api({ action:'verify', method:'pin', pin:inp.value, id:empId, device:deviceId() });
+      if (r.ok) showResult(true, 'تم التحقق من هويتك', 'أهلاً ' + empName);
+      else { m.innerHTML = ''; const d = document.createElement('div'); d.className = 'msg err'; d.textContent = r.msg; m.appendChild(d); }
+    } catch(e){ m.innerHTML = '<div class="msg err">تعذّر الاتصال بالخادم.</div>'; }
+    ok.disabled = false;
+  };
+  [inp, ok, m, back].forEach(x => act.appendChild(x)); inp.focus();
+}
+
+async function punch(type){
+  if (punching || !inRange || !timeState().ok) return; punching = true; lastType = type;
+  $('btnIn').disabled = $('btnOut').disabled = true;
+  $('choiceCard').classList.add('hidden'); msg('mainMsg', '', '');
+  const label = type === 'in' ? 'الحضور' : 'الانصراف';
+  try {
+    scanMode('التحقق من بصمة الوجه - ' + (type === 'in' ? 'حضور' : 'انصراف'), 'ضع وجهك داخل الإطار وانظر للكاميرا');
+    $('hintPunch').textContent = 'جاري تشغيل الكاميرا...';
+    const camP = startCam('vidPunch');
+    const loc = await freshLocation();
+    const z = nearZone(loc.lat, loc.lng);
+    if (z && z.d > z.r){ await camP.catch(() => {}); showResult(false, 'خارج نطاق ' + z.name, 'تبعد ' + z.d + ' م. البصمة متاحة داخل نطاق فرعك فقط.', false); return; }
+    await loadModels(); const v = await camP;
+    $('hintPunch').textContent = 'انظر للكاميرا';
+    const face = await captureFace(v, 'hintPunch', 1, 10000);
+    if (!face){ showResult(false, 'لم يُلتقط الوجه', 'تأكد من الإضاءة وأن وجهك داخل الإطار ثم أعد المحاولة.', true); return; }
+    $('ring').classList.add('found'); $('hintPunch').textContent = 'جاري مطابقة الوجه...';
+    const r = await api({ action:'punch', type, method:'face', id:empId, device:deviceId(),
+                          lat:loc.lat, lng:loc.lng, accuracy:loc.accuracy, descriptor:face.descriptor, photo:face.photo });
+    if (r.ok){ faceFails = 0; markPunch(type); showResult(true, 'تم التحقق وتسجيل ' + label, r.msg); }
+    else { faceFails++; showResult(false, 'لم يتم التحقق', r.msg, true); }
+  } catch(e){
+    showResult(false, 'تعذّر التحقق', e.message, !/الكاميرا|Permission|NotAllowed|NotFound/i.test(e.message + e.name));
+  } finally {
+    punching = false; lockPunch(!inRange);
+  }
+}
+
+function markPunch(type){
+  const t = { in:todayIn(), out:todayOut() };
+  if (type === 'in' && !t.in) t.in = nowHM();
+  if (type === 'out') t.out = nowHM();
+  setToday(t);
+}
+
+/* ---------- اختيار طريقة التحقق بعد الضغط على حضور أو انصراف ---------- */
+function openChoice(type, pinFirst){
+  lastType = type;
+  $('choiceTitle').textContent = type === 'in' ? 'تسجيل حضور' : 'تسجيل انصراف';
+  $('pinFallback').value = ''; msg('pinMsg', '', ''); msg('mainMsg', '', '');
+  if (noFaceMode) pinFirst = true;
+  document.querySelector('#choiceCard .choice').classList.toggle('hidden', noFaceMode);
+  $('choiceCard').querySelector('.sub').textContent = noFaceMode ? 'أدخل رمزك البديل' : 'اختر طريقة التحقق';
+  $('pinReviewNote').classList.toggle('hidden', noFaceMode);
+  $('pinBox').classList.toggle('hidden', !pinFirst); $('chPin').classList.toggle('sel', !!pinFirst);
+  $('choiceCard').classList.remove('hidden');
+  if (pinFirst) $('pinFallback').focus();
+}
+function closeChoice(){ $('choiceCard').classList.add('hidden'); }
+$('chFace').onclick = () => { closeChoice(); punch(lastType); };
+$('chPin').onclick = () => { $('pinBox').classList.remove('hidden'); $('chPin').classList.add('sel'); $('pinFallback').focus(); };
+$('btnChoiceCancel').onclick = closeChoice;
+$('choiceCard').onclick = e => { if (e.target === $('choiceCard')) closeChoice(); };
+$('btnPinGo').onclick = () => pinPunch(lastType);
+function openPin(){ openChoice(lastType, true); }
+
+async function pinPunch(pinType){
+  const pin = $('pinFallback').value;
+  if (!inRange) return msg('pinMsg', 'البصمة متاحة داخل نطاق فرعك فقط.', 'err');
+  if (!timeState().ok) return msg('pinMsg', timeState().text, 'err');
+  if (!/^\d{4}$/.test(pin)) return msg('pinMsg', 'أدخل الرمز البديل (4 أرقام)', 'err');
+  $('btnPinGo').disabled = true;
+  try {
+    msg('pinMsg', 'جاري التسجيل...', 'info');
+    const loc = await freshLocation();
+    let photo = '';
+    if (!noFaceMode){ try { const v = await startCam('vidPunch'); await sleep(800); photo = snapshot(v); } catch(e){}
+    stopCam(); }
+    const r = await api({ action:'punch', type:pinType, method:'pin', pin, id:empId, device:deviceId(),
+                          lat:loc.lat, lng:loc.lng, accuracy:loc.accuracy, photo });
+    if (r.ok){ closeChoice(); markPunch(pinType); showResult(true, 'تم تسجيل ' + (pinType === 'in' ? 'الحضور' : 'الانصراف') + ' بالرمز', r.msg + (r.review ? ' (سيُراجع من الإدارة)' : '')); }
+    else msg('pinMsg', r.msg, 'err');
+  } catch(e){ msg('pinMsg', e.message, 'err'); }
+  lockPunch(!inRange);
+}
+
+$('btnIn').onclick = () => { if (!$('btnIn').disabled) openChoice('in'); };
+$('btnOut').onclick = () => { if (!$('btnOut').disabled) openChoice('out'); };
+$('btnCancel').onclick = closeVerify;
+/* ---------- التنبيهات عبر OneSignal (تُرسل فقط لمن لم يبصم) ---------- */
+let osReady = null;
+const isIOS = /iPhone|iPad|iPod/.test(navigator.userAgent);
+const standalone = () => matchMedia('(display-mode: standalone)').matches || navigator.standalone === true;
+function pushInit(){
+  if (osReady) return osReady;
+  if (!cfg || !cfg.push || !('serviceWorker' in navigator) || !('Notification' in window)) return Promise.resolve(null);
+  osReady = new Promise(res => {
+    window.OneSignalDeferred = window.OneSignalDeferred || [];
+    OneSignalDeferred.push(async OS => {
+      try {
+        const base = location.pathname.replace(/[^/]*$/, '');   // مجلد الصفحة، أينما رُفعت
+        await OS.init({ appId:cfg.push, serviceWorkerPath:base.slice(1) + 'OneSignalSDKWorker.js', serviceWorkerParam:{ scope:base } });
+        if (empId) await OS.login(empId);
+        res(OS);
+      } catch(e){ console.warn('push', e); res(null); }
+    });
+    const sc = document.createElement('script'); sc.src = 'https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js'; sc.defer = true;
+    sc.onerror = () => res(null); document.head.appendChild(sc);
+  });
+  return osReady;
+}
+async function pushUi(){
+  const OS = await pushInit();
+  const on = !!(OS && OS.Notifications.permission && OS.User.PushSubscription.optedIn);
+  $('pushLbl').textContent = on ? 'التنبيهات مفعّلة' : 'تفعيل التنبيهات';
+  $('lnkRemind').classList.toggle('on', on);
+}
+$('lnkRemind').onclick = async ev => {
+  ev.preventDefault();
+  const hint = 'تصلك تنبيهات البصمة وطلبات التبرير على هذا الجوال.';
+  if (isIOS && !standalone()) return msg('mainMsg', 'على الآيفون: اضغط زر المشاركة ثم «إضافة إلى الشاشة الرئيسية»، وافتح نظام البصمة من الأيقونة، ثم فعّل التنبيهات من هنا.', 'info');
+  if (!cfg || !cfg.push || !('Notification' in window)){ location.href = 'reminders.ics'; return msg('mainMsg', 'أضف التذكير إلى تقويم جوالك: 3:40 م لبصمة الحضور و5:25 م لبصمة الخروج، من الأحد إلى الأربعاء.', 'info'); }
+  if (Notification.permission === 'denied') return msg('mainMsg', 'التنبيهات محظورة لهذا الموقع. فعّلها من إعدادات المتصفح أو الجوال ثم أعد المحاولة.', 'err');
+  const perm = Notification.permission === 'granted' ? Promise.resolve('granted') : Notification.requestPermission();
+  msg('mainMsg', 'جاري تفعيل التنبيهات...', 'info');
+  try {
+    if (await perm !== 'granted') return msg('mainMsg', 'لم يتم السماح بالتنبيهات.', 'err');
+    const OS = await pushInit(); if (!OS) return msg('mainMsg', 'تعذّر تفعيل التنبيهات على هذا الجهاز.', 'err');
+    await OS.login(empId); await OS.User.PushSubscription.optIn();
+    await pushUi(); msg('mainMsg', 'تم تفعيل التنبيهات ✔ ' + hint, 'ok');
+  } catch(e){ msg('mainMsg', 'تعذّر تفعيل التنبيهات: ' + e.message, 'err'); }
+};
+
+/* ---------- التقارير ---------- */
+const rep = { period:'day', date:null, seq:0 };
+const ud = d => { const p = d.split('-').map(Number); return new Date(Date.UTC(p[0], p[1] - 1, p[2])); };
+const iso = t => t.toISOString().slice(0, 10);
+const addDays = (d, n) => { const t = ud(d); t.setUTCDate(t.getUTCDate() + n); return iso(t); };
+const isWork = d => RULES().days.indexOf(ud(d).getUTCDay()) !== -1;
+const fmtD = (d, o) => ud(d).toLocaleDateString('ar-SA-u-ca-gregory', Object.assign({ timeZone:'UTC' }, o));
+function t12(t){ if (!t) return '—'; const m = String(t).match(/(\d{1,2}):(\d{2})/); if (!m) return t; let h = +m[1]; if (/PM|م/i.test(t) && h < 12) h += 12; return (h % 12 || 12) + ':' + m[2] + (h < 12 ? ' ص' : ' م'); }
+function el(tag, cls, text){ const e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+const PILL = { 'حاضر':'p-ok', 'متأخر':'p-late', 'غائب':'p-abs' };
+
+function lastWorkday(d){ for (let i = 0; i < 7 && !isWork(d); i++) d = addDays(d, -1); return d; }
+function periodStart(p, d){
+  if (p === 'week') return addDays(d, -ud(d).getUTCDay());
+  if (p === 'month') return d.slice(0, 8) + '01';
+  return d;
+}
+function shiftPeriod(dir){
+  let d = rep.date;
+  if (rep.period === 'day'){ do { d = addDays(d, dir); } while (!isWork(d)); }
+  else if (rep.period === 'week') d = addDays(periodStart('week', d), 7 * dir);
+  else { const t = ud(periodStart('month', d)); t.setUTCMonth(t.getUTCMonth() + dir); d = iso(t); }
+  rep.date = d; loadReport();
+}
+function periodLabel(r){
+  if (rep.period === 'day') return fmtD(rep.date, { weekday:'long', day:'numeric', month:'long' });
+  if (rep.period === 'month') return fmtD(rep.date, { month:'long', year:'numeric' });
+  const s = periodStart('week', rep.date);
+  return fmtD(s, { day:'numeric', month:'short' }) + ' – ' + fmtD(addDays(s, 3), { day:'numeric', month:'short' });
+}
+
+function openReports(){
+  show('vReport');
+  if (!rep.date) rep.date = rep.period === 'day' ? lastWorkday(riyadhNow().date) : riyadhNow().date;
+  loadReport();
+}
+async function loadReport(){
+  const my = ++rep.seq, today = riyadhNow().date;
+  document.querySelectorAll('#repTabs button').forEach(b => b.classList.toggle('on', b.dataset.p === rep.period));
+  $('repLabel').textContent = periodLabel();
+  let nextStart;
+  if (rep.period === 'day'){ nextStart = addDays(rep.date, 1); while (!isWork(nextStart)) nextStart = addDays(nextStart, 1); }
+  else if (rep.period === 'week') nextStart = addDays(periodStart('week', rep.date), 7);
+  else { const t = ud(periodStart('month', rep.date)); t.setUTCMonth(t.getUTCMonth() + 1); nextStart = iso(t); }
+  $('repNext').disabled = nextStart > today;
+  ['tP','tL','tA'].forEach(id => $(id).textContent = '-');
+  $('repBody').innerHTML = '<div class="msg info">جاري تحميل التقرير...</div>';
+  let r;
+  try { r = await api({ action:'report', id:empId, device:deviceId(), period:rep.period, date:rep.date }); }
+  catch(e){ if (my === rep.seq) msg('repBody', 'تعذّر الاتصال بالخادم.', 'err'); return; }
+  if (my !== rep.seq) return;
+  if (!r.ok) return msg('repBody', r.msg === 'إجراء غير معروف' ? 'التقارير تحتاج تحديث كود الخادم (Apps Script) إلى آخر نسخة.' : r.msg, 'err');
+  renderReport(r);
+}
+function renderReport(r){
+  let P = 0, L = 0, A = 0; r.rows.forEach(x => { P += x.present; L += x.late; A += x.absent; });
+  $('tP').textContent = P; $('tL').textContent = L; $('tA').textContent = A;
+  $('repTitle').textContent = r.admin ? 'تقارير الموظفين' : 'تقريري';
+  const body = $('repBody'); body.innerHTML = '';
+  if (!r.dates.length){ body.appendChild(el('div', 'msg info', 'ليس يوم دوام. حسب أيام دوامك.')); return; }
+  const row = (title, sub, pills) => {
+    const x = el('div', 'rrow'), nm = el('div', 'nm'); nm.appendChild(el('b', '', title)); if (sub) nm.appendChild(el('small', '', sub));
+    const ps = el('div', 'pills'); pills.forEach(p => ps.appendChild(el('span', 'pill ' + p[1], p[0])));
+    x.appendChild(nm); x.appendChild(ps); body.appendChild(x);
+  };
+  const times = d => d.in || d.out ? 'حضور ' + t12(d.in) + ' • انصراف ' + t12(d.out) : '';
+  if (!r.admin){
+    r.rows[0].days.slice().reverse().forEach(d => row(fmtD(d.date, { weekday:'long', day:'numeric', month:'short' }), times(d), [[d.status, PILL[d.status] || 'p-none']]));
+    return;
+  }
+  body.appendChild(el('div', 'rnote', 'عدد الموظفين: ' + r.rows.length));
+  if (r.period === 'day'){
+    const order = { 'غائب':0, 'متأخر':1, 'لم يسجّل':2, 'حاضر':3 };
+    r.rows.slice().sort((a, b) => (order[a.days[0].status] ?? 9) - (order[b.days[0].status] ?? 9))
+      .forEach(x => row(x.name, times(x.days[0]), [[x.days[0].status, PILL[x.days[0].status] || 'p-none']]));
+  } else {
+    r.rows.slice().sort((a, b) => b.absent - a.absent || b.late - a.late)
+      .forEach(x => row(x.name, '', [['حاضر ' + x.present, 'p-ok'], ['متأخر ' + x.late, 'p-late'], ['غائب ' + x.absent, 'p-abs']]));
+  }
+}
+$('btnReports').onclick = openReports;
+
+/* ---------- الإجازات والاستئذان: من بوابة الموظفين ← الموارد البشرية ---------- */
+$('btnLeave').onclick = () => { location.href = 'https://aaba-erp.github.io/aaba/staff.html'; };
+/* نقل البصمة لجوال جديد بالرمز البديل (لمن غيّر جواله أو فتح الصفحة من متصفح آخر) */
+$('btnRebind').onclick = async () => {
+  const pin = $('rbPin').value;
+  if (!/^\d{4}$/.test(pin)) return msg('loginMsg', 'أدخل رمزك البديل (4 أرقام).', 'err');
+  $('btnRebind').disabled = true;
+  try { const r = await api({ action:'rebind', device:deviceId(), pin:pin }); if (!r.ok) return msg('loginMsg', r.msg, 'err'); $('rbPin').value = ''; rbMode(false); msg('loginMsg', r.msg, 'ok'); await route(); }
+  catch(e){ msg('loginMsg', 'تعذّر الاتصال بالخادم.', 'err'); } finally { $('btnRebind').disabled = false; }
+};
+function esc2(t){ return String(t == null ? '' : t).replace(/[&<>"]/g, c => ({ '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;' }[c])); }
+function standaloneUi(){
+  $('empPin').onkeydown = e => { if (e.key === 'Enter') $('btnLogin').onclick(); };
+  document.querySelector('label[for=rbPin]').textContent = 'رمزك البديل (4 أرقام)'; $('rbPin').placeholder = 'الرمز البديل'; $('rbPin').maxLength = 4; }
+function rbMode(on){ $('rebindBox').classList.toggle('hidden', !on); ['empPin', 'empPinL'].forEach(id => $(id).classList.toggle('hidden', on)); ['empId', 'btnLogin'].forEach(id => $(id).classList.toggle('hidden', on)); document.querySelector('label[for=empId]').classList.toggle('hidden', on); }
+$('btnRebindNo').onclick = () => { rbMode(false); store.del('fp_emp'); msg('loginMsg', '', ''); };
+$('btnRepBack').onclick = () => { show('vMain'); lockPunch(!inRange); };
+$('repPrev').onclick = () => shiftPeriod(-1);
+$('repNext').onclick = () => shiftPeriod(1);
+document.querySelectorAll('#repTabs button').forEach(b => b.onclick = () => {
+  rep.period = b.dataset.p;
+  if (rep.period === 'day') rep.date = lastWorkday(rep.date > riyadhNow().date ? riyadhNow().date : rep.date);
+  loadReport();
+});
+
+/* ---------- الساعة ---------- */
+function tick(){
+  const now = new Date(), tz = { timeZone:'Asia/Riyadh' };
+  const parts = new Intl.DateTimeFormat('ar-SA', { ...tz, hour:'numeric', minute:'2-digit', second:'2-digit', hour12:true }).formatToParts(now);
+  const p = t => (parts.find(x => x.type === t) || {}).value || '';
+  $('clock').textContent = p('hour') + ':' + p('minute');
+  $('clockSec').textContent = ':' + p('second');
+  $('clockAmPm').textContent = p('dayPeriod');
+  $('today').textContent = now.toLocaleDateString('ar-SA', { ...tz, weekday:'long', day:'numeric', month:'long', year:'numeric' });
+  $('todayG').textContent = now.toLocaleDateString('ar-SA-u-ca-gregory', { ...tz, day:'numeric', month:'long', year:'numeric' }) + ' م';
+}
+document.addEventListener('visibilitychange', () => { if (document.hidden){ if (geoWatch !== null){ navigator.geolocation.clearWatch(geoWatch); geoWatch = null; } } else if (!$('vMain').classList.contains('hidden')) startGeo(); });
+tick(); setInterval(() => { tick(); if (!$('vMain').classList.contains('hidden')){ if (!punching) lockPunch(!inRange); drawStay(); } }, 1000);
+
+boot();
+</script>
+</body>
+</html>
