@@ -15,5 +15,7 @@
 <div class="ld">جاري تحميل بوابة الموظفين…</div>
 <!-- عند تغيير رابط النشر في Apps Script: ضع الرابط الجديد هنا فقط -->
 <iframe src="https://script.google.com/macros/s/AKfycbx5zIF4YW9xgMP4tHulkMBDUzNgBa7U0iPcEfDxMpqt_WWJaZV7gLSV8gU106GRQQcwrQ/exec" allow="geolocation; clipboard-write; camera; microphone; display-capture; autoplay; fullscreen" allowfullscreen title="بوابة الموظفين"></iframe>
+<!-- الانتقال بين البوابتين: البوابة ترسل الرابط فتنتقل الصفحة مباشرة (روابط الموقع فقط) -->
+<script>window.addEventListener("message", function (e) { var d = e.data || {}; if (typeof d.abaaGo !== "string") return; if (!/^https:\/\/([a-z0-9-]+\.)*(googleusercontent|google)\.com$/.test(e.origin)) return; if (d.abaaGo.indexOf("https://aaba-erp.github.io/aaba/") !== 0) return; location.href = d.abaaGo; });</script>
 </body>
 </html>

@@ -17,5 +17,7 @@
 <iframe id="pf" data-src="https://script.google.com/macros/s/AKfycbyAItTz0nCOsuo1YFi2q1XcUU6x_acWr4cUZXd4UamyIi19mV8UL81byxyd_9WVGE7lpQ/exec" allow="geolocation; clipboard-write" title="بوابة شؤون المستفيدين"></iframe>
 <!-- الدخول الموحد: رمز ?sso= القادم من بوابة الموظفين يُمرَّر للبوابة ثم يُحذف من شريط العنوان -->
 <script>(function () { var f = document.getElementById("pf"), m = /[?&]sso=([A-Za-z0-9-]+)/.exec(location.search); f.src = f.getAttribute("data-src") + (m ? "?sso=" + m[1] : ""); if (m) history.replaceState(null, "", location.pathname); })();</script>
+<!-- الانتقال بين البوابتين: البوابة ترسل الرابط فتنتقل الصفحة مباشرة (روابط الموقع فقط) -->
+<script>window.addEventListener("message", function (e) { var d = e.data || {}; if (typeof d.abaaGo !== "string") return; if (!/^https:\/\/([a-z0-9-]+\.)*(googleusercontent|google)\.com$/.test(e.origin)) return; if (d.abaaGo.indexOf("https://aaba-erp.github.io/aaba/") !== 0) return; location.href = d.abaaGo; });</script>
 </body>
 </html>
